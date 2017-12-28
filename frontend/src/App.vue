@@ -126,8 +126,11 @@ export default {
           this.$nextTick(() => this.$refs.textbox.focus())
           this.nextWordValid = !resp.unknownWord
           if (!this.nextWordValid) { return }
-          this.nextWordValid = true
-          this.currentRobotWord = resp.victory ? nextHumanWord : this.nextRobotWord
+          
+          # resp.victory indicates that the human and robot words basically matched,
+          # up to stemming; we display the human word for both in this case, to make
+          # it seem just a tiny bit more magical
+          this.currentRobotWord = resp.victory ? nextHumanWord.lower() : this.nextRobotWord
           this.currentHumanWord = nextHumanWord
           this.guessedWords.push([this.currentRobotWord, this.currentHumanWord])
           this.round += 1
