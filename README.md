@@ -13,7 +13,7 @@ Python dependencies are:
 In short:
 ```
 (cd frontend && npm install && npm run build)
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 python3 create_data_file.py
 python3 server.py
 ```
