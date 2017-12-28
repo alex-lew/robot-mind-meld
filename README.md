@@ -1,4 +1,10 @@
 # robot-mind-meld
 A little game powered by word vectors
 
-Download mini.h5 into this directory from http://conceptnet.s3.amazonaws.com/precomputed-data/2016/numberbatch/17.06/mini.h5.
+```
+(cd frontend && npm install && npm run build)
+python3 create_data_file.py
+python3 server.py
+```
+
+Then browse to http://0.0.0.0:8000 :-)
