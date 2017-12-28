@@ -56,7 +56,7 @@
               I'm sorry, I don't know that word! Try another?
             </p>
           </transition>
-          <input ref="textbox" v-model="nextHumanWord"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
+          <input ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
           <button :disabled="nextHumanWord == ''" v-on:click="sayWord">say it now!</button>
         </div>
       </div>
