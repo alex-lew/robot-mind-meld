@@ -1,4 +1,4 @@
-#!/Users/alexlew/anaconda/bin/python3
+#!/usr/bin/env python3
 """
 create_data_file.py
 Alex Lew
