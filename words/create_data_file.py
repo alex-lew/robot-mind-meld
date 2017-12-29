@@ -21,9 +21,15 @@ with h5py.File('mini.h5', 'r') as original:
     all_embeddings = original['mat']['block0_values'][:]
     all_words = [word.decode('utf-8') for word in original['mat']['axis1'][:]]
 
+with open('ukspellings.txt') as f:
+    ukspellings = set(map(str.strip, f.readlines()))
+
+def should_include(word):
+    return word.startswith('/c/en') and word[6:] not in ukspellings
+
 word_index = {
     word[6:]: i
-    for i, word in enumerate(all_words) if word.startswith('/c/en')
+    for i, word in enumerate(all_words) if should_include(word)
 }
 english_embedddings = all_embeddings[list(word_index.values())]
 norms = np.linalg.norm(english_embedddings, axis=1)

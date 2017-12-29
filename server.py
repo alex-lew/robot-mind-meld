@@ -17,6 +17,7 @@ def standardized(term):
     Breaks into underscore-separated words and replaces numbers with '#' signs.
     """
     tokens = wordfreq.tokenize(term.replace('_', ' '), 'xx')
+    print(term, tokens)
     if tokens[0] == 'to':
         tokens = tokens[1:]
     return replace_numbers('_'.join(tokens))
@@ -38,7 +39,7 @@ def replace_numbers(s):
 
 # Load word embeddings. Run create_data_file.py to create the
 # embeddings.h5 file.
-with h5py.File("embeddings.h5", "r") as f:
+with h5py.File("words/embeddings.h5", "r") as f:
     mat = f['mat']['vecs'][:]
     words = [word.decode('utf-8') for word in f['mat']['words'][:]]
 index = {word: i for i, word in enumerate(words)}
