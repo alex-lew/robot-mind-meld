@@ -58,8 +58,8 @@ def notAllowed(past, candidate):
 
 def nextWord(prevWord1, prevWord2, past):
     i1, i2 = index[prevWord1], index[prevWord2]
-    closest = np.argsort(np.dot(mat, mat[i1, :]) * np.dot(mat, mat[i2, :]))
-    closest = [words[word] for word in closest][-200:]
+    closest = np.argsort(np.dot(mat, mat[i1, :]) * np.dot(mat, mat[i2, :]))[-200:]
+    closest = [words[word] for word in closest]
     closest = list(filter(lambda x: not notAllowed(past, x) and wordfreq.zipf_frequency(x, 'en') > 0, closest))
     print(closest[-1])
     return closest[-1]
