@@ -10,7 +10,7 @@
       </div>
       <div id="conversation">
         <div class="dialogue-box">
-          <p class="emojicon">🤖</p>
+          <img class="emojicon" src="./assets/me.png" alt="a robot emoji">
           <transition mode="out-in" name="slide-fade">
             <p class="caption" :key="currentRobotWord">
               {{currentRobotWord}}
@@ -18,7 +18,7 @@
           </transition>
         </div>
         <div class="dialogue-box">
-          <p class="emojicon">👩🏽‍💻</p>
+          <img class="emojicon" src="./assets/you.png" alt="a human emoji">
           <transition mode="out-in" name="slide-fade">
             <p class="caption" :key="currentHumanWord">
               {{currentHumanWord}}
@@ -37,16 +37,17 @@
             <p v-else-if="round == 1" :key="round">
               The goal is to achieve <em>mind meld</em>: to say the <em>same word simultaneously</em>.
               <br>This first attempt failed, but don’t despair! Let’s try again: think of a word
-              <br>related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>. 
+              related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>. 
               I will too.
               Fingers crossed! 🤞
             </p>
             <p v-else :key="round">
-              <span v-if="currentCloseness < 0.05">Hmm, we are still quite distant. Let’s try again!</span>
+              <span v-if="currentCloseness < 0.05">Odd combination... This should be fun!</span>
               <span v-else-if="currentCloseness > 0.25">Ahh, so close! Let’s try again.</span>
               <span v-else>We’ll get there! Let’s try again.</span>
               <br>
-              Something related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>.
+              <span v-if="currentCloseness < 0.05">Think we can find something related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>?</span>
+              <span v-else>Something related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>.</span>
             </p>
           </transition>
         </div>
@@ -56,7 +57,7 @@
               I'm sorry, I don't know that word! Try another?
             </p>
           </transition>
-          <input ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
+          <input ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord" autocapitalize="none"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
           <button :disabled="nextHumanWord == ''" v-on:click="sayWord">say it now!</button>
         </div>
       </div>
@@ -150,10 +151,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  padding-top: 60px;
   display: flex;
   flex-direction: column;
   padding-bottom: 30px;
+  margin: auto;
 }
 
 #app div {
@@ -171,6 +173,12 @@ export default {
 #app #logo {
   width: 200px;
   margin: auto;
+}
+
+@media screen and (max-width: 350px) {
+  #app #logo {
+    width: 150px;
+  }
 }
 
 /* BOT DISPLAY BOX */
@@ -208,13 +216,14 @@ export default {
 }
 
 #bot-display #conversation .dialogue-box .emojicon {
-  font-size: 5em;
+  width: 75px;
+  margin-top: 30px;
   line-height: 0;
-  margin-bottom: 0.5em;
 }
 
 #bot-display #conversation .dialogue-box .caption {
   font-size: 1.5em;
+  margin-top: 5px;
 }
 
 /* PLAYING */
@@ -228,6 +237,7 @@ export default {
   line-height: 1.5em;
   font-size: 1.1em;
   font-weight: 500;
+  max-width: 600px;
   margin-top: 10px;
 }
 
@@ -379,5 +389,55 @@ export default {
 .slide-fade-leave-to {
   transform: translateY(-10px);
   opacity: 0;
+}
+
+
+/* 
+
+Sizes:
+
+maximum is 450, which you see at 475 and above.
+between 450 and 475, you see 425
+between 425 and 450, you see 400
+between 375 and 400
+
+*/
+
+
+@media screen and (max-width: 450px) {
+  #app, #bot-display, #playing #input-form {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  #app, #bot-display, #playing #input-form {
+    width: 375px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #app, #bot-display, #playing #input-form {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  #app, #bot-display, #playing #input-form {
+    width: 325px;
+  }
+}
+
+
+@media screen and (max-width: 350px) {
+  #app, #bot-display, #playing #input-form {
+    width: 300px;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  #app #logo {
+    width: 90px;
+  }
 }
 </style>
