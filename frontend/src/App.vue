@@ -106,7 +106,6 @@ export default {
     fetch('/first_word').then(response => response.json()).then(({word}) => {
       this.nextRobotWord = word
       this.waiting = false
-      this.$nextTick(() => this.$refs.textbox.focus())
     })
   },
   methods: {
