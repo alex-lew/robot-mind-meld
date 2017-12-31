@@ -4,7 +4,7 @@
     <h1>Robot Mind Meld</h1>
     <div id="bot-display">
       <div id="headline">
-        <span v-if="round == 0">Hello, human person! Shall we play <a href="https://wiki.improvresourcecenter.com/index.php?title=Mind_Meld">an improv game</a>?</span>
+        <span v-if="round == 0">Hello, human person! Wanna play <a href="https://wiki.improvresourcecenter.com/index.php?title=Mind_Meld">an improv game</a>?</span>
         <span v-else-if="!finished">Attempt #{{round}} at Connection with Human Person</span>
         <span v-else>Attempt #{{round}} — Connected with Human Person!</span>
       </div>
@@ -54,7 +54,7 @@
         <div id="input-form">
           <transition name="fade-error">
             <p id="error-message" v-if="!nextWordValid && nextHumanWord == ''">
-              I'm sorry, I don't know that word! Try another?
+              I'm sorry, I don’t know that word! Try another?
             </p>
           </transition>
           <input :disabled="waiting" ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord" autocapitalize="none"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
@@ -73,10 +73,11 @@
           </table>
         </div>
         <div id="about">
-          <p v-if="round < 10">That was fast! And I promise, I didn’t cheat: like a human, I decide on each word I say <em>before</em> you reveal what you’re thinking. (Don't believe me? <a href="/">Play again</a>, and whenever you’d like, you can test me. Just <span v-if="isTouchScreen">rest your finger lightly on</span> <span v-else>hover your mouse over</span> my face, and I’ll reveal the word I’ve chosen!)</p>
+          <p v-if="round < 10">That was fast! And I promise, I didn’t cheat: like a human, I decide on each word I say <em>before</em> you reveal what you’re thinking. (Don’t believe me? <a href="/">Play again</a>, and whenever you’d like, you can test me. Just <span v-if="isTouchScreen">rest your finger lightly on</span> <span v-else>hover your mouse over</span> my face, and I’ll reveal the word I’ve chosen!)</p>
           <p>I was designed by <a href="http://alexlew.net">Alex Lew</a>, and am powered by <a href="https://blog.conceptnet.io/2016/05/25/conceptnet-numberbatch-a-new-name-for-the-best-word-embeddings-you-can-download/">Conceptnet Numberbatch</a>, a set of “word embeddings” that allow me to think quantitatively about words and their relationships. Constructed by analyzing millions of documents for patterns, these “numberbatches” now play a role in most programs that process language, from speech recognition to machine translation.</p> 
           <p>This game is meant to serve as a fun exploration of the ways that machines are beginning to understand our language—and, by extension, our world. Find the code on <a href="http://github.com/alex-lew/robot-mind-meld">Github</a>.</p> 
           <a href="/">Play again?</a>
+          <p style="font-size: .8em">Thanks to <a href="https://www.emojione.com/">EmojiOne</a> for the free emoji!</p>
         </div>
       </div>
     </transition>
@@ -88,8 +89,8 @@ export default {
   name: 'app',
   data () {
     return {
-      currentHumanWord: 'you emoji',
-      currentRobotWord: 'me emoji',
+      currentHumanWord: 'this is you',
+      currentRobotWord: 'this is me',
       guessedWords: [],
       nextHumanWord: '',
       nextRobotWord: '',
@@ -182,7 +183,7 @@ export default {
 }
 
 #app a {
-  color: #42b983;
+  color: rgba(60, 150, 240, 0.85);
 }
 
 #app #logo {
@@ -205,11 +206,12 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  border-radius: 5px;
 }
 
 #bot-display #headline {
   padding: 10px;
-  color: red;
+  color: deeppink;
   font-weight: 500;
   border-bottom: solid 1px #aaa;
   margin: 0;
@@ -369,13 +371,13 @@ export default {
 
 @keyframes pulsing {
   0% {
-    color: pink;
+    color: rgba(255, 20, 147, .2);
   }
   50% {
-    color: red;
+    color: deeppink;
   }
   100% {
-    color: pink;
+    color: rgba(255, 20, 147, .2);
   }
 }
 
