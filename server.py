@@ -17,7 +17,6 @@ def standardized(term):
     Breaks into underscore-separated words and replaces numbers with '#' signs.
     """
     tokens = wordfreq.tokenize(term.replace('_', ' '), 'xx')
-    print(term, tokens)
     if tokens[0] == 'to':
         tokens = tokens[1:]
     return replace_numbers('_'.join(tokens))
@@ -47,23 +46,72 @@ index = {word: i for i, word in enumerate(words)}
 # Word stemming
 ls = LancasterStemmer()
 ps = PorterStemmer()
-stem = lambda x: ps.stem(ls.stem(x))
+stemmers = [
+    ls.stem, ps.stem, lambda x: ps.stem(ls.stem(x)),
+    lambda x: ls.stem(ps.stem(x))
+]
 
+def lexicallyRelated(word1, word2):
+    """
+    Determine whether two words might be lexically related to one another.
+    """
+    return any(map(lambda stem: stem(word1) == stem(word2), stemmers)
+              ) or word1.startswith(word2) or word2.startswith(word1)
 
-def notAllowed(past, candidate):
-    return any(
-        map(lambda x: stem(x) == stem(candidate) or x.startswith(candidate) or candidate.startswith(x),
-            past))
+def canUse(candidate, past):
+    """
+    Check whether a candidate is OK to use.
+    TODO: check against list of "banned words" (like given names).
+    """
+    candidateFrequency = wordfreq.zipf_frequency(candidate, "en", wordlist="large")
+    candidateRootFrequency = max(
+        candidateFrequency,
+        wordfreq.zipf_frequency(ps.stem(candidate), "en", wordlist="large"))
 
+    # Reject words that are too infrequent or too frequent (like "a" or "the")
+    if candidateFrequency < 2.3 or candidateFrequency > 6:
+        return False
+
+    # Mostly, this rejects '#'-containing words
+    if not candidate.isalpha():
+        return False
+
+    # Now, we check if we've used a related word before.
+    if any(map(lambda w: lexicallyRelated(candidate, w), past)):
+        return False
+
+    # If we have a relatively infrequent word that is too related to
+    # our past three rounds of words, we should reject it.
+    if sum(similarityScore(x, candidate) for x in past[-6:]) > 2 and candidateRootFrequency < 3.2:
+        return False
+
+    # otherwise, we're ok!
+    return True
+
+# Precompute frequencies of all words in list
+frequencies = np.array(
+    [wordfreq.zipf_frequency(x, 'en', wordlist="large") for x in words])
 
 def nextWord(prevWord1, prevWord2, past):
+    """
+    the further apart the two words are to each other, the less
+    "frequency" should matter; it should not drown out subtle connections
+    to both words. TODO: Improve this and use the fact that zipf is
+    logarithmic.
+    """
+    currentCloseness = similarityScore(prevWord1, prevWord2)
+    if currentCloseness < .09:
+        freq_modifier = 1000.0
+    elif currentCloseness < .25:
+        freq_modifier = 200.0
+    else:
+        freq_modifier = 80.0
     i1, i2 = index[prevWord1], index[prevWord2]
-    closest = np.argsort(np.dot(mat, mat[i1, :]) * np.dot(mat, mat[i2, :]))[-200:]
-    closest = [words[word] for word in closest]
-    closest = list(filter(lambda x: not notAllowed(past, x) and wordfreq.zipf_frequency(x, 'en') > 0, closest))
-    print(closest[-1])
-    return closest[-1]
-
+    wordScores = (np.dot(mat, mat[i1, :]) * np.dot(mat, mat[i2, :])) + (frequencies / freq_modifier)
+    bestWords = map(lambda i: words[i], reversed(np.argsort(wordScores)))
+    bestWord = next(word for word in bestWords if canUse(word, past))
+    print(prevWord1, prevWord2, bestWord)
+    return bestWord
 
 def similarityScore(w1, w2):
     score = np.dot(mat[index[w1], :], mat[index[w2], :])
@@ -78,7 +126,7 @@ app.static("/static", "./frontend/dist/static/")
 @app.route("/first_word")
 async def first_word(request):
     w = random.choice(list(index))
-    while wordfreq.zipf_frequency(w, 'en') == 0:
+    while wordfreq.zipf_frequency(w, 'en', wordlist="large") < 3.5:
         w = random.choice(list(index))
     return json({"word": w})
 
@@ -92,11 +140,11 @@ async def next_word(request):
     """
     w1 = standardized(request.json['word1'])
     w2 = standardized(request.json['word2'])
-    past = map(lambda w: standardized(w), request.json['past'])
+    past = map(standardized, request.json['past'])
     past = list(past) + [w1, w2]
     if w1 not in words:
         return json({"unknownWord": True})
-    if stem(w1) == stem(w2):
+    if ps.stem(w1) == ps.stem(w2):
         return json({"unknownWord": False, "victory": True})
     else:
         return json({
