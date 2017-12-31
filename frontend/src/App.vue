@@ -57,7 +57,7 @@
               I'm sorry, I don't know that word! Try another?
             </p>
           </transition>
-          <input ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord" autocapitalize="none"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
+          <input :disabled="waiting" ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord" autocapitalize="none"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
           <button :disabled="nextHumanWord == ''" v-on:click="sayWord">say it now!</button>
         </div>
       </div>
@@ -96,18 +96,25 @@ export default {
       round: 0,
       currentCloseness: 0,
       nextWordValid: true,
+      waiting: true,
       finished: false,
-      isTouchScreen: "ontouchstart" in window
+      isTouchScreen: 'ontouchstart' in window
     }
   },
   mounted: function () {
-    this.$nextTick(() => this.$refs.textbox.focus())
-    fetch('/first_word').then(response => response.json()).then(({word}) => this.nextRobotWord = word)
+    fetch('/first_word').then(response => response.json()).then(({word}) => {
+      this.nextRobotWord = word
+      this.waiting = false
+      this.$nextTick(() => this.$refs.textbox.focus())
+    })
   },
   methods: {
     sayWord: function () {
+      if (this.waiting || this.nextHumanWord === '') { return }
+
       // Clear the text field to disable the button,
       // but save its contents
+      this.waiting = true
       const nextHumanWord = this.nextHumanWord
       this.nextHumanWord = ''
       this.nextWordValid = true
@@ -124,12 +131,18 @@ export default {
           word2: this.nextRobotWord
         })
       })
-        .then(response => response.json())
+        .then(function (response) {
+          if (!response.ok) {
+            this.waiting = false
+          }
+          return response.json()
+        })
         .then((resp) => {
+          this.waiting = false
           this.$nextTick(() => this.$refs.textbox.focus())
           this.nextWordValid = !resp.unknownWord
           if (!this.nextWordValid) { return }
-          
+
           // resp.victory indicates that the human and robot words basically matched,
           // up to stemming; we display the human word for both in this case, to make
           // it seem just a tiny bit more magical
@@ -140,7 +153,7 @@ export default {
           this.finished = resp.victory
           this.currentCloseness = resp.simScore
           this.nextRobotWord = resp.nextWord
-        })
+        }).catch(_ => this.waiting = false)
     }
   }
 }
