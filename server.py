@@ -51,6 +51,10 @@ stemmers = [
     lambda x: ls.stem(ps.stem(x))
 ]
 
+# Acceptable first words
+with open('words/acceptable_first_words.txt') as f:
+    first_words = set(map(str.strip, f.readlines()))
+
 def lexicallyRelated(word1, word2):
     """
     Determine whether two words might be lexically related to one another.
@@ -126,7 +130,7 @@ app.static("/static", "./frontend/dist/static/")
 @app.route("/first_word")
 async def first_word(request):
     w = random.choice(list(index))
-    while wordfreq.zipf_frequency(w, 'en', wordlist="large") < 3.5:
+    while w not in first_words or wordfreq.zipf_frequency(w, 'en', wordlist="large") < 3.5:
         w = random.choice(list(index))
     return json({"word": w})
 
