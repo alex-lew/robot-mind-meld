@@ -1,5 +1,6 @@
 <template>
   <main id="app">
+    <a href="https://github.com/alex-lew/robot-mind-meld"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
     <img id="logo" alt="Me, a friendly robot!" src="./assets/bot.png">
     <h1>Robot Mind Meld</h1>
     <div id="bot-display">
@@ -59,7 +60,9 @@
           </transition>
           <input :disabled="waiting" ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord" autocapitalize="none"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
           <button :disabled="nextHumanWord == ''" v-on:click="sayWord">say it now!</button>
+          <a id="start-over" v-if="round != 0" href="/">start over</a>
         </div>
+        <p id="acknowledgments">I was designed by <a href="http://alexlew.net">Alex Lew</a>, and am powered by <a href="https://blog.conceptnet.io/2016/05/25/conceptnet-numberbatch-a-new-name-for-the-best-word-embeddings-you-can-download/">Conceptnet Numberbatch</a>, a set of “word embeddings” that allow me to think quantitatively about words and their relationships. My face (and yours!) come from <a href="https://www.emojione.com/">EmojiOne</a>.</p>
       </div>
       <div v-else id="gameover" key="gameover">
         <p id="victory-banner">WE DID IT!</p>
@@ -75,10 +78,9 @@
         <div id="about">
           <p v-if="round < 10">That was fast! And I promise, I didn’t cheat: like a human, I decide on each word I say <em>before</em> you reveal what you’re thinking. (Don’t believe me? Whenever you’d like, you can test me. Just <span v-if="isTouchScreen">rest your finger lightly on</span> <span v-else>hover your mouse over</span> my face, and I’ll reveal the word I’ve chosen!)</p>
           <p>I was designed by <a href="http://alexlew.net">Alex Lew</a>, and am powered by <a href="https://blog.conceptnet.io/2016/05/25/conceptnet-numberbatch-a-new-name-for-the-best-word-embeddings-you-can-download/">Conceptnet Numberbatch</a>, a set of “word embeddings” that allow me to think quantitatively about words and their relationships. Constructed by analyzing millions of documents for patterns, these “numberbatches” now play a role in most programs that process language, from speech recognition to machine translation.</p> 
-          <p>This game is meant to serve as a fun exploration of the ways that machines are beginning to understand our language—and, by extension, our world. Find the code on <a href="http://github.com/alex-lew/robot-mind-meld">Github</a>.</p> 
+          <p>This game is meant to serve as a fun exploration of the ways that machines are beginning to understand our language—and, by extension, our world.</p> 
           <a href="/">Play again?</a>
-          <p style="font-size: .8em">Thanks to <a href="https://www.emojione.com/">EmojiOne</a> for the free emoji!</p>
-        </div>
+          </div>
       </div>
     </transition>
   </main>
@@ -289,6 +291,24 @@ export default {
   display: block;
 }
 
+#playing #input-form #start-over {
+  background: rgba(255, 28, 20, 0.8);
+  color: white;
+  display: block;
+  font-size: 1em;
+  text-decoration: none;
+  padding: 2px;
+  border: none;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 100px;
+}
+
+#playing #input-form #start-over:hover {
+  background: rgba(255, 28, 20, 0.5);
+}
+
+
 #playing #input-form button {
   background: rgb(71, 180, 253);
   color: white;
@@ -311,6 +331,15 @@ export default {
 
 #playing #input-form button:active {
   background: rgba(60, 150, 240, 0.85);
+}
+
+#playing #acknowledgments {
+  max-width: 550px;
+  margin-top: 30px;
+  color: gray;
+  border-top: dashed 1px gray;
+  font-size: 0.8em;
+  padding-top: 10px;
 }
 
 /* GAME OVER */
@@ -421,32 +450,32 @@ between 375 and 400
 
 
 @media screen and (max-width: 450px) {
-  #app, #bot-display, #playing #input-form {
+  #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 400px;
   }
 }
 
 @media screen and (max-width: 425px) {
-  #app, #bot-display, #playing #input-form {
+  #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 375px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  #app, #bot-display, #playing #input-form {
+  #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 350px;
   }
 }
 
 @media screen and (max-width: 375px) {
-  #app, #bot-display, #playing #input-form {
+  #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 325px;
   }
 }
 
 
 @media screen and (max-width: 350px) {
-  #app, #bot-display, #playing #input-form {
+  #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 300px;
   }
 }
