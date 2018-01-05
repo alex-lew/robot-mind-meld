@@ -55,6 +55,10 @@ stemmers = [
 with open('words/acceptable_first_words.txt') as f:
     first_words = set(map(str.strip, f.readlines()))
 
+# Unacceptable words to say
+with open('words/bad_words.txt') as f:
+    bad_words = set(map(str.strip, f.readlines()))
+
 def lexicallyRelated(word1, word2):
     """
     Determine whether two words might be lexically related to one another.
@@ -65,7 +69,6 @@ def lexicallyRelated(word1, word2):
 def canUse(candidate, past):
     """
     Check whether a candidate is OK to use.
-    TODO: check against list of "banned words" (like given names).
     """
     candidateFrequency = wordfreq.zipf_frequency(candidate, "en", wordlist="large")
     candidateRootFrequency = max(
@@ -78,6 +81,10 @@ def canUse(candidate, past):
 
     # Mostly, this rejects '#'-containing words
     if not candidate.isalpha():
+        return False
+
+    # Is it a bad word?
+    if candidate in bad_words:
         return False
 
     # Now, we check if we've used a related word before.
