@@ -133,7 +133,6 @@ app = Sanic(__name__)
 app.static("/", "./frontend/dist/index.html")
 app.static("/static", "./frontend/dist/static/")
 
-
 @app.route("/first_word")
 async def first_word(request):
     w = random.choice(list(index))
@@ -155,6 +154,9 @@ async def next_word(request):
     past = list(past) + [w1, w2]
     if w1 not in words:
         return json({"unknownWord": True})
+    if len(past) > 2:
+        with open('wordlog.csv', 'a+') as f:
+            f.write(','.join(past[-4:]) + "\n")
     if ps.stem(w1) == ps.stem(w2):
         return json({"unknownWord": False, "victory": True})
     else:
