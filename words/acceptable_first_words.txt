@@ -5247,7 +5247,6 @@ china
 chinaware
 chinchilla
 chine
-chink
 chino
 chinos
 chinstrap
@@ -7509,7 +7508,6 @@ cumulus
 cuneiform
 cunnilingus
 cunning
-cunt
 cup
 cupboard
 cupcake
@@ -9822,7 +9820,6 @@ dye
 dyer
 dyestuff
 dying
-dyke
 dynamic
 dynamics
 dynamism
@@ -11352,11 +11349,6 @@ faddish
 faddist
 fade
 faerie
-fag
-faggot
-fagot
-fagoting
-faience
 fail
 failing
 faille
@@ -20828,9 +20820,6 @@ nickname
 nicotine
 niece
 nifty
-niggard
-niggardliness
-nigger
 niggle
 niggler
 niggling
@@ -25592,8 +25581,6 @@ rap
 rapacious
 rapaciousness
 rapacity
-rape
-raper
 rapeseed
 rapid
 rapidity
@@ -25601,7 +25588,6 @@ rapidness
 rapids
 rapier
 rapine
-rapist
 rappel
 rapper
 rapport
@@ -26044,7 +26030,6 @@ redraw
 redrawn
 redress
 redrew
-redskin
 reduce
 reducer
 reducible
@@ -35415,7 +35400,6 @@ westernmost
 westward
 westwards
 wet
-wetback
 wetland
 wetlands
 wetness
@@ -35573,10 +35557,6 @@ whoops
 whoosh
 whopper
 whopping
-whore
-whorehouse
-whoreish
-whorish
 whorl
 whorled
 whose
