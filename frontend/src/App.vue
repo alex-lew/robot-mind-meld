@@ -60,7 +60,10 @@
           </transition>
           <input :disabled="waiting" ref="textbox"  v-on:keyup.enter="sayWord" v-model="nextHumanWord" autocapitalize="none"  :class="{error: !nextWordValid && nextHumanWord==''}" :placeholder="round == 0 ? 'type it here...' : ''">
           <button :disabled="nextHumanWord == ''" v-on:click="sayWord">say it now!</button>
-          <a id="start-over" v-if="round != 0" href="/">start over</a>
+          <div id="give-up-buttons">
+            <a id="start-over" v-if="round != 0" href="/">start over</a>
+            <a id="close-enough" v-if="currentCloseness > 0.75" v-on:click="winPrematurely">these words are already the same, silly robot</a>
+          </div>
         </div>
         <p id="acknowledgments">I was designed by <a href="http://alexlew.net">Alex Lew</a>, and am powered by <a href="https://blog.conceptnet.io/2016/05/25/conceptnet-numberbatch-a-new-name-for-the-best-word-embeddings-you-can-download/">Conceptnet Numberbatch</a>, a set of “word embeddings” that allow me to think quantitatively about words and their relationships. My face (and yours!) come from <a href="https://www.emojione.com/">EmojiOne</a>.</p>
       </div>
@@ -111,6 +114,9 @@ export default {
     })
   },
   methods: {
+    winPrematurely: function () {
+      this.finished = true
+    },
     sayWord: function () {
       if (this.waiting || this.nextHumanWord === '') { return }
 
@@ -291,21 +297,43 @@ export default {
   display: block;
 }
 
-#playing #input-form #start-over {
-  background: rgba(255, 28, 20, 0.8);
+
+#playing #give-up-buttons {
+  display: flex;
+  margin: auto;
+}
+
+#playing #input-form #start-over, #playing #input-form #close-enough {
   color: white;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1em;
   text-decoration: none;
-  padding: 2px;
+  padding: 3px;
   border: none;
   border-radius: 5px;
-  margin: 20px auto;
+  margin: 20px 5px;
   width: 100px;
 }
 
+#start-over {
+  background: rgba(255, 28, 20, 0.8);
+}
+
+#playing #input-form #close-enough {
+  background: rgba(60, 150, 240, 0.85);
+  width: 200px;
+  cursor: pointer;
+}
+
+
 #playing #input-form #start-over:hover {
   background: rgba(255, 28, 20, 0.5);
+}
+
+#playing #input-form #close-enough:hover {
+  background: rgb(71, 180, 253);
 }
 
 
@@ -471,12 +499,18 @@ between 375 and 400
   #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 325px;
   }
+  #playing #input-form #close-enough {
+    width: 175px;
+  }
 }
 
 
 @media screen and (max-width: 350px) {
   #app, #bot-display, #playing #input-form, #playing #acknowledgments {
     width: 300px;
+  }
+  #playing #input-form #close-enough {
+    width: 150px;
   }
 }
 
