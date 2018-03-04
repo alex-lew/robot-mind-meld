@@ -77,7 +77,6 @@ aboriginal
 aborigine
 aborning
 abort
-abortion
 abortionist
 abortive
 abound
@@ -148,7 +147,6 @@ absurdness
 abundance
 abundant
 abuse
-abuser
 abusive
 abusiveness
 abut
@@ -2540,10 +2538,6 @@ bassoon
 bassoonist
 basswood
 bast
-bastard
-bastardization
-bastardize
-bastardy
 baste
 baster
 bastion
@@ -7494,7 +7488,6 @@ cultural
 culture
 cultured
 culvert
-cum
 cumber
 cumbersome
 cumbersomeness
@@ -12737,9 +12730,6 @@ frustum
 fry
 fryer
 fuchsia
-fuck
-fucker
-fucking
 fuddle
 fudge
 fuehrer
@@ -23609,7 +23599,6 @@ pirouette
 pis
 piscatorial
 pismire
-piss
 pissed
 pistachio
 pistil
@@ -24026,7 +24015,6 @@ pony
 ponytail
 pooch
 poodle
-poof
 pooh
 pool
 poolroom
