@@ -38,7 +38,7 @@
             <p v-else-if="round == 1" :key="round">
               The goal is to achieve <em>mind meld</em>: to say the <em>same word simultaneously</em>.
               <br>This first attempt failed, but don’t despair! Let’s try again: think of a word
-              related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>. 
+              related to <em>both</em> <a target="_blank" :href="'https://en.wiktionary.org/wiki/'+ currentHumanWord"><span class="highlight">{{currentHumanWord}}</span></a> <em>and</em> <a target="_blank" :href="'https://en.wiktionary.org/wiki/'+ currentRobotWord"><span class="highlight">{{currentRobotWord}}</span></a>.
               I will too.
               Fingers crossed! 🤞
             </p>
@@ -47,8 +47,8 @@
               <span v-else-if="currentCloseness > 0.25">Ahh, so close! Let’s try again.</span>
               <span v-else>We’ll get there! Let’s try again.</span>
               <br>
-              <span v-if="currentCloseness < 0.05">Think we can find something related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>?</span>
-              <span v-else>Something related to <em>both</em> <span class="highlight">{{currentHumanWord}}</span> <em>and</em> <span class="highlight">{{currentRobotWord}}</span>.</span>
+              <span v-if="currentCloseness < 0.05">Think we can find something related to <em>both</em> <a target="_blank" :href="'https://en.wiktionary.org/wiki/'+ currentHumanWord"><span class="highlight">{{currentHumanWord}}</span></a> <em>and</em> <a target="_blank" :href="'https://en.wiktionary.org/wiki/'+ currentRobotWord"><span class="highlight">{{currentRobotWord}}</span></a>?</span>
+              <span v-else>Something related to <em>both</em> <a target="_blank" :href="'https://en.wiktionary.org/wiki/'+ currentHumanWord"><span class="highlight">{{currentHumanWord}}</span></a> <em>and</em> <a target="_blank" :href="'https://en.wiktionary.org/wiki/'+ currentRobotWord"><span class="highlight">{{currentRobotWord}}</span></a>.</span>
             </p>
           </transition>
         </div>
@@ -80,8 +80,8 @@
         </div>
         <div id="about">
           <p v-if="round < 10">That was fast! And I promise, I didn’t cheat: like a human, I decide on each word I say <em>before</em> you reveal what you’re thinking. (Don’t believe me? Whenever you’d like, you can test me. Just <span v-if="isTouchScreen">rest your finger lightly on</span> <span v-else>hover your mouse over</span> my face, and I’ll reveal the word I’ve chosen!)</p>
-          <p>I was designed by <a href="http://alexlew.net">Alex Lew</a>, and am powered by <a href="https://blog.conceptnet.io/2016/05/25/conceptnet-numberbatch-a-new-name-for-the-best-word-embeddings-you-can-download/">Conceptnet Numberbatch</a>, a set of “word embeddings” that allow me to think quantitatively about words and their relationships. Constructed by analyzing millions of documents for patterns, these “numberbatches” now play a role in most programs that process language, from speech recognition to machine translation.</p> 
-          <p>This game is meant to serve as a fun exploration of the ways that machines are beginning to understand our language—and, by extension, our world.</p> 
+          <p>I was designed by <a href="http://alexlew.net">Alex Lew</a>, and am powered by <a href="https://blog.conceptnet.io/2016/05/25/conceptnet-numberbatch-a-new-name-for-the-best-word-embeddings-you-can-download/">Conceptnet Numberbatch</a>, a set of “word embeddings” that allow me to think quantitatively about words and their relationships. Constructed by analyzing millions of documents for patterns, these “numberbatches” now play a role in most programs that process language, from speech recognition to machine translation.</p>
+          <p>This game is meant to serve as a fun exploration of the ways that machines are beginning to understand our language—and, by extension, our world.</p>
           <a href="/">Play again?</a>
           </div>
       </div>
@@ -465,7 +465,7 @@ export default {
 }
 
 
-/* 
+/*
 
 Sizes:
 
